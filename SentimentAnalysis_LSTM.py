@@ -15,28 +15,28 @@ from keras.utils.np_utils import to_categorical
 
 from keras.layers import Masking
 from keras.layers import Dense, Input, Flatten
-from keras.layers import Conv1D, GlobalMaxPooling1D, Embedding, Merge, Dropout, LSTM, GRU, Bidirectional
+from keras.layers import Conv1D, GlobalMaxPooling1D, Embedding, Dropout, LSTM, GRU, Bidirectional
 from keras.models import Sequential, Model
+# Merge,
 
 from keras.layers import Dense, Activation
 
 from keras.preprocessing.text import one_hot 
-
-import  GetDict 
+import GetDict
 #SENTENCE_NUM = 44000     #数据数量，也就是电影评论数据总共的条数
 MAX_SEQUENCE_LENGTH = 3   #句子统一长度
 MAX_NB_WORDS = 50000      #处理的最大单词数量
 EMBEDDING_DIM = 100       #向量维度
 VALIDATION_SPLIT = 0.2    #验证集，训练集的一部分比例数据作为验证集，划分在shuffle之后
-
+DIR = r"E:\Githubresponsity\SentimentAnalysis_LSTM"
 
 #读取电影评论
-data_texts =GetDict.readDict(GetDict.getDict('/SentimentAnalysis_LSTM/data/train_word.csv')).values()
-data_labels =GetDict.readDict(GetDict.getDict('/SentimentAnalysis_LSTM/data/train_sentiment.csv')).values()
+data_texts =GetDict.readDict(GetDict.getDict(r'E:\Githubresponsity\SentimentAnalysis_LSTM\data\train_word.csv')).values()
+data_labels =GetDict.readDict(GetDict.getDict(r'E:\Githubresponsity\SentimentAnalysis_LSTM\data\train_sentiment.csv')).values()
 #print data_texts
 #print data_labels
 
-DIR = "/SentimentAnalysis_LSTM"#这里的路径要修改为自己的路径
+#DIR = "/SentimentAnalysis_LSTM"#这里的路径要修改为自己的路径
 #指对应词语的词向量
 embeddings_index = {}
 f = open(os.path.join(DIR, 'content.bin'))  #词向量
@@ -51,7 +51,7 @@ print('Total %s word vectors.' % len(embeddings_index))
 
 labels = to_categorical(np.asarray(data_labels))
 texts=data_texts
-print len(texts),len(labels)
+print (len(texts),len(labels))
 
 #Tokenizer是一个用于向量化文本,或将文本转换为序列(即单词在字典中的下标构成的列表，从1算起）的类
 tokenizer = Tokenizer(num_words=MAX_NB_WORDS)
@@ -105,8 +105,8 @@ embedding_layer = Embedding(len(word_index) + 1,
                             trainable=False)
 
 print('Traing and validation set number of positive and negative reviews')
-print y_train.sum(axis=0)
-print y_val.sum(axis=0)
+print (y_train.sum(axis=0))
+print (y_val.sum(axis=0))
 
 
 #输入张量，维度为句子最大长度
@@ -150,7 +150,7 @@ def predict_proba(texts):
 #    texts=GetDict.readDict(GetDict.getDict(texts)).values()
     tokenizer = Tokenizer(num_words=MAX_NB_WORDS)
     tokenizer.fit_on_texts(texts)
-    sequences = tokenizer.texts_to_sequences(texts) 
+    sequences = tokenizer.texts_to_sequences(texts)
     data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
 #    data=one_hot(texts, 4)
     return model.predict_proba(data,  verbose=0)

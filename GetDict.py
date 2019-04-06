@@ -10,13 +10,13 @@ import pandas as pd
 #函数返回我们需要的嵌套字典
 #传入文件，输出字典
 def getDict(filename):
-	read = open(filename,'r')   #打开文件
+	read = open(filename,'r',encoding='utf-8')   #打开文件
 	lists=read.readlines()      #读取行
 	row_words = {}              #存储每一行的数据的字典
 	words_dict={}               #存储为字典格式的所有数据
 	row_words_length=[]         #存储每一行数据长度的数据
 	linelist=[]                 #每一行切分后的列表
-	row_length = len(open(filename,'r').readlines())   #行数总长度
+	row_length = len(open(filename,'r',encoding='utf-8').readlines())   #行数总长度
 #	print row_length 
 	#得到每一行的长度，并存储到数组中
 	for length in lists:
